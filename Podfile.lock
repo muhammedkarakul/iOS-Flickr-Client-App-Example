@@ -1,0 +1,28 @@
+PODS:
+  - Alamofire (4.8.2)
+  - PureLayout (3.1.4)
+  - SVProgressHUD (2.2.5)
+  - SwiftyJSON (5.0.0)
+
+DEPENDENCIES:
+  - Alamofire
+  - PureLayout
+  - SVProgressHUD
+  - SwiftyJSON
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Alamofire
+    - PureLayout
+    - SVProgressHUD
+    - SwiftyJSON
+
+SPEC CHECKSUMS:
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  PureLayout: f08c01b8dec00bb14a1fefa3de4c7d9c265df85e
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
+
+PODFILE CHECKSUM: 81f2e8da221c1e938d9b5f5080ae9db6bd2c2f24
+
+COCOAPODS: 1.5.0
