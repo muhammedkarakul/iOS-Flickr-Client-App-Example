@@ -20,11 +20,25 @@ class FlickrAPI {
     
     private static let secret = "8eac4175f638ff99"
     
-    public static func getRecentPhotos(completion: @escaping (DataResponse<Any>) -> Void) {
+    public static func getRecentPhotos(withPage page: String, completion: @escaping (DataResponse<Any>) -> Void) {
         let parameters = [
             "method" : "flickr.photos.getRecent",
             "api_key" : api_key,
+            "page" : page,
             "per_page" : "99",
+            "format" : format,
+            "nojsoncallback" : "1",
+            "extras" : "url_q,url_z,owner_name,date_upload"
+        ]
+        
+        request(withParameters: parameters, completion: completion)
+    }
+    
+    public static func serachPhoto(withText text: String, completion: @escaping (DataResponse<Any>) -> Void) {
+        let parameters = [
+            "method" : "flickr.photos.search",
+            "api_key" : api_key,
+            "text" : text,
             "format" : format,
             "nojsoncallback" : "1",
             "extras" : "url_q,url_z,owner_name,date_upload"

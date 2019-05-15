@@ -40,8 +40,15 @@
                                     <constraint firstAttribute="height" constant="44" id="jGz-w7-2dJ"/>
                                 </constraints>
                                 <textInputTraits key="textInputTraits"/>
+                                <scopeButtonTitles>
+                                    <string>Title</string>
+                                    <string>Title</string>
+                                </scopeButtonTitles>
+                                <connections>
+                                    <outlet property="delegate" destination="oXB-gN-aPU" id="Xq4-VV-zcK"/>
+                                </connections>
                             </searchBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="350" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hT9-8W-A0w">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="350" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hT9-8W-A0w">
                                 <rect key="frame" x="0.0" y="108" width="375" height="559"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -169,6 +176,7 @@
                     <navigationItem key="navigationItem" title="Home" id="asc-Sf-c0c"/>
                     <connections>
                         <outlet property="photosTableView" destination="hT9-8W-A0w" id="Ou7-0N-aEG"/>
+                        <outlet property="searchBar" destination="ZpA-Bh-Rjx" id="877-hM-uAJ"/>
                         <segue destination="La2-yU-Klq" kind="show" identifier="showDetailViewSegue" id="o1d-99-Jst"/>
                     </connections>
                 </viewController>

@@ -25,10 +25,10 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
         
-        ownerNameLabel.text = photo.getOwner()
+        ownerNameLabel.text = photo.getOwnerName()
         
         guard let url = photo.getHighQualityPhotoUrl() else { return }
         
@@ -43,6 +43,12 @@ class DetailViewController: UIViewController {
         }
         
         photoTitleLabel.text = photo.getTitle()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        SVProgressHUD.setDefaultMaskType(.none)
     }
     
     override func viewDidDisappear(_ animated: Bool) {

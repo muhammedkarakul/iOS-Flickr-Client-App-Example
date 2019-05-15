@@ -16,20 +16,20 @@ class FlickrJSON {
         
         //if let ownerID = id {
             
-            FlickrAPI.getUser(withUserId: id) { response in
-                //print("GET USER RESPONSE: \(response)")
-                
-                if let error = response.error {
-                    
-                    completion(error.localizedDescription)
-                    
-                    return
-                }
-                
-                if let data = response.data {
-                    do {
-                        let json = try JSON(data: data)
-                        
+//            FlickrAPI.getUser(withUserId: id) { response in
+//                //print("GET USER RESPONSE: \(response)")
+//
+//                if let error = response.error {
+//
+//                    completion(error.localizedDescription)
+//
+//                    return
+//                }
+        
+                //if let data = response.data {
+//                    do {
+//                        let json = try JSON(data: data)
+        
                         //print("JSON: \(json)")
                         
                         if let person = json["person"].dictionary {
@@ -44,23 +44,23 @@ class FlickrJSON {
                             }
                         }
                         
-                    } catch {
-                        completion("No json received!")
-                    }
-                }
-            }
+//                    } catch {
+//                        completion("No json received!")
+//                    }
+                //}
+            //}
         //}
     }
     
     public static func getPhotosItem(fromJSON json: JSON, completion: @escaping ([Photo]) -> Void) {
         
-        FlickrAPI.getRecentPhotos { response in
-            
-            if let error = response.error {
-                print("ERROR: \(error.localizedDescription)")
-                return
-            }
-            
+//        FlickrAPI.getRecentPhotos(withPage: "1") { response in
+//
+//            if let error = response.error {
+//                print("ERROR: \(error.localizedDescription)")
+//                return
+//            }
+        
             if let photosDictionary = json["photos"].dictionary {
                 
                 if let photosArray = photosDictionary["photo"]?.array {
@@ -80,7 +80,7 @@ class FlickrJSON {
                     completion(photos)
                 }
             }
-        }
+        //}
         //return photos
     }
 }

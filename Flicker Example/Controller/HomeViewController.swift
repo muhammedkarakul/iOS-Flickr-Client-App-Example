@@ -11,8 +11,9 @@ import Alamofire
 import SVProgressHUD
 import SwiftyJSON
 
-class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
+    @IBOutlet var searchBar: UISearchBar!
     @IBOutlet var photosTableView: UITableView!
     
     private var photos: [Photo] = [Photo]() {
@@ -21,7 +22,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
-    //private var availableCells = [IndexPath]()
+    private var displayedCellsIndex = [Int]()
+    
+    private var currentPage = 1
     
     private var selectedPhotoIndex = 0
     
@@ -35,16 +38,21 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         
         SVProgressHUD.setDefaultStyle(.dark)
-        //SVProgressHUD.setDefaultMaskType(.black)
         
-        getPhotosFromFlickr()
+        prepareView()
     }
     
-    private func getPhotosFromFlickr() {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        SVProgressHUD.setDefaultMaskType(.black)
+    }
+    
+    private func prepareView() {
         
         SVProgressHUD.show()
         
-        FlickrAPI.getRecentPhotos { response in
+        FlickrAPI.getRecentPhotos(withPage: String(currentPage)) { response in
             
             if let data = response.data {
                 
@@ -108,37 +116,98 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        let currentPhoto = photos[indexPath.row]
+        var isUnique = true
         
-        guard let imageData = currentPhoto.getImageData() else { return }
+        if displayedCellsIndex.count > 0 {
+            for displayedCellIndex in displayedCellsIndex {
+                if displayedCellIndex == indexPath.row {
+                    isUnique = false
+                    break
+                } else {
+                    isUnique = true
+                }
+            }
+        }
         
-        if imageData.count == 0 {
-            if let url = currentPhoto.getLowQualityPhotoUrl() {
+        
+        if isUnique {
+            displayedCellsIndex.append(indexPath.row)
+            
+            guard let lastDisplayedCellIndex = displayedCellsIndex.last else { return }
+            
+            let currentPhoto = photos[lastDisplayedCellIndex]
+            
+            guard let imageData = currentPhoto.getImageData() else { return }
+            
+            print("Displayed Cell Index: \(indexPath.row)")
+            
+            if imageData.count == 0 {
                 
-                if let photoURL = URL(string: url) {
+                if let url = currentPhoto.getLowQualityPhotoUrl() {
                     
-                    SVProgressHUD.show()
-                    
-                    Alamofire.request(photoURL).response(completionHandler: { result in
+                    if let photoURL = URL(string: url) {
                         
-                        SVProgressHUD.dismiss(withDelay: 0.5)
+                        SVProgressHUD.show()
                         
-                        guard let data = result.data else { return }
+                        Alamofire.request(photoURL).response(completionHandler: { result in
+                            
+                            SVProgressHUD.dismiss(withDelay: 0.5)
+                            
+                            guard let data = result.data else { return }
+                            
+                            currentPhoto.setImageData(data)
+                            
+                            guard let image = UIImage(data: data) else { return }
+                            
+                            self.images.append(image)
+                            
+                        })
                         
-                        currentPhoto.setImageData(data)
-                        
-                        guard let image = UIImage(data: data) else { return }
-                        
-                        self.images.append(image)
-                        
-                    })
+                    }
                     
                 }
                 
             }
-
         }
         
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    
+        guard let text = searchBar.text else { return }
+        
+        SVProgressHUD.show()
+        
+        FlickrAPI.serachPhoto(withText: text) { result in
+            
+            SVProgressHUD.dismiss(withDelay: 0.5)
+            
+            guard let data = result.data else { return }
+            
+            do {
+                let json = try JSON(data: data )
+                
+                SVProgressHUD.show()
+                
+                FlickrJSON.getPhotosItem(fromJSON: json, completion: { photos in
+                    
+                    self.displayedCellsIndex = [Int]()
+                    
+                    self.photos = photos
+                    
+                    SVProgressHUD.dismiss(withDelay: 0.5)
+                    
+                    self.view.endEditing(true)
+                
+                })
+                
+            } catch {
+                SVProgressHUD.showError(withStatus: error.localizedDescription)
+            }
+            
+            
+            
+        }
     }
     
     // MARK: - Navigation
