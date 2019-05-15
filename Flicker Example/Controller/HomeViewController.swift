@@ -5,80 +5,73 @@
 //  Created by Muhammed Karakul on 9.05.2019.
 //  Copyright © 2019 Muhammed Karakul. All rights reserved.
 //
-
-/*
-Flicker
- 
-Key:
-0b255075bbbf70c2f017bb10c4bbdc66
- 
-Secret:
-8eac4175f638ff99
- 
- If the icon server is greater than zero, the url takes the following format:
- http://farm{icon-farm}.staticflickr.com/{icon-server}/buddyicons/{nsid}.jpg
- 
- else the following url should be used:
- https://www.flickr.com/images/buddyicon.gif
-*/
  
 import UIKit
 import Alamofire
 import SVProgressHUD
 import SwiftyJSON
-import SVProgressHUD
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet var photosTableView: UITableView!
     
-    private var photos = [Photo]()
+    private var photos: [Photo] = [Photo]() {
+        didSet {
+            photosTableView.reloadData()
+        }
+    }
+    
+    //private var availableCells = [IndexPath]()
+    
+    private var selectedPhotoIndex = 0
+    
+    private var images = [UIImage]() {
+        didSet {
+            photosTableView.reloadData()
+        }
+    }
         
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        SVProgressHUD.setDefaultStyle(.dark)
-        SVProgressHUD.show(withStatus: "Photos are loading...")
         
-        Flickr.getRecentPhotos { response in
-            print("RESPONSE: \(response)")
+        SVProgressHUD.setDefaultStyle(.dark)
+        //SVProgressHUD.setDefaultMaskType(.black)
+        
+        getPhotosFromFlickr()
+    }
+    
+    private func getPhotosFromFlickr() {
+        
+        SVProgressHUD.show()
+        
+        FlickrAPI.getRecentPhotos { response in
             
-            SVProgressHUD.dismiss(withDelay: 0.5)
-            
-            if let photosData = response.data {
+            if let data = response.data {
+                
                 do {
+                    let json = try JSON(data: data)
                     
-                    let photosJSON = try JSON(data: photosData)
+                    //print("JSON: \(json)")
                     
-                    if let photos = photosJSON["photos"].dictionary {
+                    FlickrJSON.getPhotosItem(fromJSON: json, completion: { photos in
                         
-                        if let photo = photos["photo"]?.array {
-                            
-                            for item in photo {
-                                
-                                let tempPhoto = Photo()
-                                
-                                tempPhoto.getDataFrom(photoItem: item)
-                                
-                                self.photos.append(tempPhoto)
-                                
-                            }
-                            
-                            self.photosTableView.reloadData()
-                            
-                        }
-                    }
+                        self.photos = photos
+                        
+                        SVProgressHUD.dismiss(withDelay: 0.5)
+                        
+                    })
                     
                 } catch {
-                    // JSON is invalid.
-                    SVProgressHUD.showError(withStatus: "There is a problem.")
+                    
+                    SVProgressHUD.showError(withStatus: error.localizedDescription)
+                    //print("ERROR: No json recived!")
+                    
                 }
                 
-            } else {
-                // No data received.
-                SVProgressHUD.showError(withStatus: "There is a problem.")
             }
+            
         }
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -89,45 +82,75 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "defaultCell") as! PhotoTableViewCell
         
-        if let ownerID = photos[indexPath.row].getOwner() {
-            Flickr.getUser(withUserId: ownerID) { response in
-                //print("RESPONSE: \(response)")
-            }
+        guard let profileImage = photos[indexPath.row].getOwnerProfileImageData() else { return cell}
+        
+        if profileImage.count > 0 {
+            cell.ownerProfilePicture.image = UIImage(data: profileImage)
         }
         
         cell.ownerNameLabel.text = photos[indexPath.row].getOwnerName()
         
-        if let photoURLString = photos[indexPath.row].getHighQualityPhotoUrl() {
-            if let photoURL = URL(string: photoURLString) {
-                Alamofire.request(photoURL).response { result in
-                    if let imageData = result.data {
-                        cell.photoImageView.image = UIImage(data: imageData, scale: 1.0)
-                    } else {
-                        print("No result received.")
-                    }
-                }
-            }
-            
+        if let imageData = photos[indexPath.row].getImageData() {
+            cell.photoImageView.image = UIImage(data: imageData, scale: 1.0)
         }
         
         cell.photoTitleLabel.text = photos[indexPath.row].getTitle()
 
-        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Selected Item Index: \(indexPath.row)")
+        
+        selectedPhotoIndex = indexPath.row
+        
+        performSegue(withIdentifier: "showDetailViewSegue", sender: self)
     }
 
-    /*
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        let currentPhoto = photos[indexPath.row]
+        
+        guard let imageData = currentPhoto.getImageData() else { return }
+        
+        if imageData.count == 0 {
+            if let url = currentPhoto.getLowQualityPhotoUrl() {
+                
+                if let photoURL = URL(string: url) {
+                    
+                    SVProgressHUD.show()
+                    
+                    Alamofire.request(photoURL).response(completionHandler: { result in
+                        
+                        SVProgressHUD.dismiss(withDelay: 0.5)
+                        
+                        guard let data = result.data else { return }
+                        
+                        currentPhoto.setImageData(data)
+                        
+                        guard let image = UIImage(data: data) else { return }
+                        
+                        self.images.append(image)
+                        
+                    })
+                    
+                }
+                
+            }
+
+        }
+        
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        if let detailViewController = segue.destination as? DetailViewController {
+            detailViewController.photo = photos[selectedPhotoIndex]
+        }
     }
-    */
+ 
 
 }

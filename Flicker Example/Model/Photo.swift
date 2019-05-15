@@ -30,6 +30,9 @@ class Photo {
     private var width_z: String?
     private var ownername: String?
     private var dateupload: String?
+    private var imageData: Data?
+    private var ownerProfileImageURL: String?
+    private var ownerProfileImageData: Data?
     
     // MARK: - Initialization
     
@@ -52,6 +55,9 @@ class Photo {
         width_z = ""
         ownername = ""
         dateupload = ""
+        imageData = Data()
+        ownerProfileImageURL = ""
+        ownerProfileImageData = Data()
         
     }
     
@@ -72,7 +78,10 @@ class Photo {
         width_q: String?,
         width_z: String?,
         ownername: String?,
-        dateupload: String?
+        dateupload: String?,
+        imageData: Data?,
+        ownerProfileImageURL: String?,
+        ownerProfileImageData: Data?
         ) {
         
         self.farm = farm
@@ -92,6 +101,9 @@ class Photo {
         self.width_z = width_z
         self.ownername = ownername
         self.dateupload = dateupload
+        self.imageData = imageData
+        self.ownerProfileImageURL = ownerProfileImageURL
+        self.ownerProfileImageData = ownerProfileImageData
         
     }
     
@@ -121,9 +133,31 @@ class Photo {
         return dateupload
     }
     
+    public func getImageData() -> Data? {
+        return imageData
+    }
+    
+    public func getOwnerProfileImageURL() -> String? {
+        return ownerProfileImageURL
+    }
+    
+    public func getOwnerProfileImageData() -> Data? {
+        return ownerProfileImageData
+    }
+    
     // MARK: - Setter Methods
     
+    public func setImageData(_ data: Data?) {
+        imageData = data
+    }
     
+    public func setOwnerProfileImageURL( url: String?) {
+        ownerProfileImageURL = url
+    }
+    
+    public func setOwnerProfileImageData( data: Data? ) {
+        ownerProfileImageData = data
+    }
     
     // MARK: - Utilities
     
@@ -145,25 +179,25 @@ class Photo {
     /**
      * Get photo data from internet and store with properties.
      */
-    public func getDataFrom(photoItem item: JSON) {
+    public func setData(fromJSON json: JSON) {
         
-        farm = item["farm"].int
-        height_q = item["height_q"].string
-        height_z = item["height_z"].string
-        id = item["id"].string
-        isfamily = item["isfamily"].int
-        isfriend = item["isfriend"].int
-        ispublic = item["ispublic"].int
-        owner = item["owner"].string
-        secret = item["secret"].string
-        server = item["server"].string
-        title = item["title"].string
-        url_q = item["url_q"].string
-        url_z = item["url_z"].string
-        width_q = item["width_q"].string
-        width_z = item["width_z"].string
-        ownername = item["ownername"].string
-        dateupload = item["dateupload"].string
+        farm = json["farm"].int
+        height_q = json["height_q"].string
+        height_z = json["height_z"].string
+        id = json["id"].string
+        isfamily = json["isfamily"].int
+        isfriend = json["isfriend"].int
+        ispublic = json["ispublic"].int
+        owner = json["owner"].string
+        secret = json["secret"].string
+        server = json["server"].string
+        title = json["title"].string
+        url_q = json["url_q"].string
+        url_z = json["url_z"].string
+        width_q = json["width_q"].string
+        width_z = json["width_z"].string
+        ownername = json["ownername"].string
+        dateupload = json["dateupload"].string
         
     }
     

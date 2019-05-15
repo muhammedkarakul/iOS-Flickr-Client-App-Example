@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 import SVProgressHUD
 
-class Flickr {
+class FlickrAPI {
     
     private static let baseUrl = "https://api.flickr.com/services/rest/"
     
@@ -46,6 +46,7 @@ class Flickr {
     }
     
     private static func request(withParameters parameters: [String : String], completion: @escaping (DataResponse<Any>) -> Void) {
+        
         Alamofire.request(
             baseUrl,
             method: .get,

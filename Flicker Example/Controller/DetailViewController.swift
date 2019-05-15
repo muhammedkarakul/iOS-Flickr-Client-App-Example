@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import Alamofire
+import SVProgressHUD
 
 class DetailViewController: UIViewController {
+    
+    public var photo = Photo()
 
     // MARK: - Properties
     
@@ -23,6 +27,28 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        ownerNameLabel.text = photo.getOwner()
+        
+        guard let url = photo.getHighQualityPhotoUrl() else { return }
+        
+        SVProgressHUD.show()
+        
+        Alamofire.request(url).response { response in
+            
+            SVProgressHUD.dismiss(withDelay: 0.5)
+            
+            guard let data = response.data else { return }
+            self.photoImageView.image = UIImage(data: data)
+        }
+        
+        photoTitleLabel.text = photo.getTitle()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        SVProgressHUD.dismiss()
     }
     
 

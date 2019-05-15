@@ -1,2 +1,2 @@
-## iOS Flickr Client Application Example
+# iOS Flickr Client Application Example
 
