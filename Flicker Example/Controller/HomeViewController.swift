@@ -195,6 +195,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                     
                     self.photos = photos
                     
+                    self.photosTableView.setContentOffset(.zero, animated: true)
+                    
                     SVProgressHUD.dismiss(withDelay: 0.5)
                     
                     self.view.endEditing(true)
