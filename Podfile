@@ -8,6 +8,5 @@ target 'Flicker Example' do
   # Pods for Flicker Example
 	pod 'Alamofire'
 	pod 'SVProgressHUD'
-	pod 'PureLayout'
 	pod 'SwiftyJSON'
 end

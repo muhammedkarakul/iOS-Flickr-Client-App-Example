@@ -10,7 +10,6 @@
 		3120D831F4A885EDA5CE4900 /* Pods_Flicker_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5B6622A583150199B74A1BE /* Pods_Flicker_Example.framework */; };
 		570AC875228870B900E03E81 /* PhotoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570AC874228870B900E03E81 /* PhotoTableViewCell.swift */; };
 		570AC8772288859A00E03E81 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570AC8762288859A00E03E81 /* CustomImageView.swift */; };
-		570AC8792288BCD900E03E81 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570AC8782288BCD900E03E81 /* User.swift */; };
 		570AC87B2288D20B00E03E81 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570AC87A2288D20B00E03E81 /* DetailViewController.swift */; };
 		570AC87D2288D7AE00E03E81 /* FlickrAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570AC87C2288D7AE00E03E81 /* FlickrAPI.swift */; };
 		5750598222870AC0001DE092 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5750598122870AC0001DE092 /* Photo.swift */; };
@@ -25,7 +24,6 @@
 /* Begin PBXFileReference section */
 		570AC874228870B900E03E81 /* PhotoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PhotoTableViewCell.swift; path = Model/PhotoTableViewCell.swift; sourceTree = "<group>"; };
 		570AC8762288859A00E03E81 /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomImageView.swift; path = Model/CustomImageView.swift; sourceTree = "<group>"; };
-		570AC8782288BCD900E03E81 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = User.swift; path = Model/User.swift; sourceTree = "<group>"; };
 		570AC87A2288D20B00E03E81 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailViewController.swift; path = Controller/DetailViewController.swift; sourceTree = "<group>"; };
 		570AC87C2288D7AE00E03E81 /* FlickrAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FlickrAPI.swift; path = Model/FlickrAPI.swift; sourceTree = "<group>"; };
 		5750598122870AC0001DE092 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Photo.swift; path = Model/Photo.swift; sourceTree = "<group>"; };
@@ -108,7 +106,6 @@
 				5750598122870AC0001DE092 /* Photo.swift */,
 				570AC874228870B900E03E81 /* PhotoTableViewCell.swift */,
 				570AC8762288859A00E03E81 /* CustomImageView.swift */,
-				570AC8782288BCD900E03E81 /* User.swift */,
 				570AC87C2288D7AE00E03E81 /* FlickrAPI.swift */,
 				57956C9B2289DA0400E2DEDF /* FlickrJSON.swift */,
 			);
@@ -236,14 +233,12 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Flicker Example/Pods-Flicker Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/PureLayout/PureLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PureLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
@@ -262,7 +257,6 @@
 				570AC875228870B900E03E81 /* PhotoTableViewCell.swift in Sources */,
 				5750598222870AC0001DE092 /* Photo.swift in Sources */,
 				57956C9C2289DA0400E2DEDF /* FlickrJSON.swift in Sources */,
-				570AC8792288BCD900E03E81 /* User.swift in Sources */,
 				576B7BD02283A360007EBAF2 /* AppDelegate.swift in Sources */,
 				57A183B322840A170089F874 /* HomeViewController.swift in Sources */,
 				570AC87D2288D7AE00E03E81 /* FlickrAPI.swift in Sources */,
@@ -418,10 +412,7 @@
 				DEVELOPMENT_TEAM = P6RBQAP3JT;
 				INFOPLIST_FILE = "Flicker Example/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.muhammedkarakul.Flicker-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -438,10 +429,7 @@
 				DEVELOPMENT_TEAM = P6RBQAP3JT;
 				INFOPLIST_FILE = "Flicker Example/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.muhammedkarakul.Flicker-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
